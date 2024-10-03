@@ -1,5 +1,5 @@
-#ifndef PASSENGER_H
-#define PASSENGER_H
+#ifndef PASSENGER_HPP
+#define PASSENGER_HPP
 
 #include <string>
 
@@ -12,5 +12,5 @@ public:
     std::string getName() const; // Метод для получения имени
 };
 
-#endif // PASSENGER_H
+#endif
 

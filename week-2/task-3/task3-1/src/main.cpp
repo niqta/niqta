@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Author.h"
-#include "Book.h"
+#include "Author.hpp"
+#include "Book.hpp"
 
 int main() {
     Author author("Стивен Кинг", 1947);

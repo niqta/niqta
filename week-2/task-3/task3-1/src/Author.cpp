@@ -1,26 +1,21 @@
-#include "Author.h"
+#include "Author.hpp"
 
-// Конструктор
-Author::Author(const std::string& name, int birthYear) 
+Author::Author(std::string name, int birthYear) 
     : name(name), birthYear(birthYear) {}
 
-// Метод для установки имени автора
-void Author::setName(const std::string& name) {
+void Author::setName(std::string name) {
     this->name = name;
 }
 
-// Метод для установки года рождения автора
 void Author::setBirthYear(int birthYear) {
     this->birthYear = birthYear;
 }
 
-// Метод для получения имени автора
-std::string Author::getName() const {
+std::string Author::getName() {
     return name;
 }
 
-// Метод для получения года рождения автора
-int Author::getBirthYear() const {
+int Author::getBirthYear() {
     return birthYear;
 }
 

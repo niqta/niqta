@@ -1,11 +1,11 @@
 #include <iostream>
-#include "Engine.h"
-#include "Passenger.h"
-#include "Car.h"
+#include "Engine.hpp"
+#include "Passenger.hpp"
+#include "Car.hpp"
 
 int main() {
     Engine engine(150); // Создаем объект Engine с мощностью 150 л.с.
-    Car car("Toyota Camry", engine); // Создаем автомобиль
+    Car car("Lada", engine); // Создаем автомобиль
 
     // Добавляем пассажиров
     Passenger p1("Никита");

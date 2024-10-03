@@ -1,5 +1,5 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
 class Engine {
 private:
@@ -10,5 +10,5 @@ public:
     int getPower() const; // Метод для получения мощности
 };
 
-#endif // ENGINE_H
+#endif
 

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./bin/Student
+./bin/main

@@ -1,22 +1,18 @@
 #include <iostream>
-#include "Book.h"
+#include "Book.hpp"
 
-// Конструктор
-Book::Book(const Author& author) 
+Book::Book(Author author) 
     : author(author) {}
 
-// Метод для установки информации об авторе
-void Book::setAuthor(const Author& author) {
+void Book::setAuthor(Author author) {
     this->author = author;
 }
 
-// Метод для получения информации об авторе
-Author Book::getAuthor() const {
+Author Book::getAuthor() {
     return author;
 }
 
-// Метод для отображения информации о книге и авторе
-void Book::displayInfo() const {
+void Book::displayInfo() {
     std::cout << "Автор: " << author.getName() 
               << ", Год рождения: " << author.getBirthYear() << std::endl;
 }

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./bin/task1-1
+./bin/main

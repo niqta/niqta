@@ -1,8 +1,8 @@
-#ifndef CAR_H
-#define CAR_H
+#ifndef CAR_HPP
+#define CAR_HPP
 
-#include "Engine.h"
-#include "Passenger.h"
+#include "Engine.hpp"
+#include "Passenger.hpp"
 #include <vector>
 #include <string>
 
@@ -19,5 +19,5 @@ public:
     void displayInfo() const; // Метод для отображения информации
 };
 
-#endif // CAR_H
+#endif
 

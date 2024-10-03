@@ -1,4 +1,4 @@
-#include "Passenger.h"
+#include "Passenger.hpp"
 
 Passenger::Passenger(const std::string& n) : name(n) {} // Реализация конструктора
 
