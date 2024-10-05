@@ -1,31 +1,42 @@
 #include "Car.hpp"
 #include <iostream>
-#include <algorithm>
 
-Car::Car(const std::string& m, const Engine& e) : model(m), engine(e) {} // Реализация конструктора
-
-void Car::addPassenger(const Passenger& passenger) {
-    passengers.push_back(passenger);
-    std::cout << "Пассажир " << passenger.getName() << " добавлен в автомобиль." << std::endl;
+Car::Car(const std::string& m, const Engine& e) : model(m), engine(e), passenger1(nullptr), passenger2(nullptr) {
+    // Инициализируем указатели на пассажиров
 }
 
-void Car::removePassenger(const Passenger& passenger) {
-    auto it = std::remove_if(passengers.begin(), passengers.end(),
-                             [&passenger](const Passenger& p) { return p.getName() == passenger.getName(); });
-    if (it != passengers.end()) {
-        passengers.erase(it, passengers.end());
-        std::cout << "Пассажир " << passenger.getName() << " удален из автомобиля." << std::endl;
+void Car::addPassenger(const Passenger& p) {
+    if (passenger1 == nullptr) {
+        passenger1 = new Passenger(p);
+        std::cout << "Пассажир " << passenger1->getName() << " добавлен в автомобиль." << std::endl;
+    } else if (passenger2 == nullptr) {
+        passenger2 = new Passenger(p);
+        std::cout << "Пассажир " << passenger2->getName() << " добавлен в автомобиль." << std::endl;
     } else {
-        std::cout << "Пассажир " << passenger.getName() << " не найден в автомобиле." << std::endl;
+        std::cout << "Количество пассажиров достигло максимума." << std::endl;
     }
 }
 
-void Car::displayInfo() const {
+void Car::removePassenger(int index) {
+    if (index == 1 && passenger1 != nullptr) {
+        std::cout << "Пассажир " << passenger1->getName() << " удален из автомобиля." << std::endl;
+        delete passenger1;
+        passenger1 = nullptr;
+    } else if (index == 2 && passenger2 != nullptr) {
+        std::cout << "Пассажир " << passenger2->getName() << " удален из автомобиля." << std::endl;
+        delete passenger2;
+        passenger2 = nullptr;
+    } else {
+        std::cout << "Некорректный индекс для удаления пассажира." << std::endl;
+    }
+}
+
+void Car::displayInfo() {
     std::cout << "Модель автомобиля: " << model << std::endl;
     std::cout << "Мощность двигателя: " << engine.getPower() << " л.с." << std::endl;
-    std::cout << "Пассажиры в автомобиле:" << std::endl;
-    for (const auto& passenger : passengers) {
-        std::cout << "- " << passenger.getName() << std::endl;
-    }
+    std::cout << "Пассажир 1: " << (passenger1 ? passenger1->getName() : "Нет") << std::endl;
+    std::cout << "Пассажир 2: " << (passenger2 ? passenger2->getName() : "Нет") << std::endl;
 }
+
+
 

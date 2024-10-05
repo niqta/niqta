@@ -4,13 +4,13 @@
 #include <string>
 
 class Passenger {
+public:
+    Passenger(const std::string& name) : name(name) {} // Конструктор
+    std::string getName() const; // Метод для получения имени
 private:
     std::string name; // Имя пассажира
-
-public:
-    Passenger(const std::string& n); // Конструктор
-    std::string getName() const; // Метод для получения имени
 };
 
 #endif
+
 

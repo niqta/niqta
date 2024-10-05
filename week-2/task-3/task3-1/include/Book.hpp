@@ -8,9 +8,8 @@ private:
     Author author;
 
 public:
-    Book(Author author); // Конструктор
+    Book(const Author& author); // Конструктор
 
-    void setAuthor(Author author);
     Author getAuthor();
     void displayInfo();
 };

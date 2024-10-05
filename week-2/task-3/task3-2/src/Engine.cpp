@@ -1,8 +1,6 @@
 #include "Engine.hpp"
 
-Engine::Engine(int p) : power(p) {} // Реализация конструктора
-
-int Engine::getPower() const {
+int Engine::getPower() const { // Реализация конструктора
     return power; // Возврат мощности
 }
 
