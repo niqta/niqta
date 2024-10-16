@@ -8,4 +8,3 @@ void sieveOfEratosthenes(int n);
 #endif
 
 
-

@@ -2,26 +2,26 @@
 #include <iostream>
 
 void sieveOfEratosthenes(int n) {
-    std::vector<bool> isPrime(n + 1, true);
-    isPrime[0] = isPrime[1] = false; // Устанавливаем 0 и 1 как составные числа.
+    std::cout << "Простые числа до " << n << ":\n";
 
-    for (int p = 2; p * p <= n; p++) {
-        if (isPrime[p]) {
-            // Помечаем все кратные p как составные числа.
-            for (int multiple = p * p; multiple <= n; multiple += p) {
-                isPrime[multiple] = false;
+    // Проверяем каждое число от 2 до n
+    for (int num = 2; num <= n; num++) {
+        bool isPrime = true; // Предполагаем, что num простое
+
+        // Проверяем делимость num на все числа от 2 до sqrt(num)
+        for (int divisor = 2; divisor * divisor <= num; divisor++) {
+            if (num % divisor == 0) {
+                isPrime = false; // num составное
+                break; // Выходим из цикла, если нашли делитель
             }
         }
-    }
-
-    std::cout << "Простые числа до " << n << ":\n";
-    for (int p = 2; p <= n; p++) {
-        if (isPrime[p]) {
-            std::cout << p << " ";
+        
+        // Если число простое, выводим его
+        if (isPrime) {
+            std::cout << num << " ";
         }
     }
     std::cout << std::endl;
 }
-
 
 

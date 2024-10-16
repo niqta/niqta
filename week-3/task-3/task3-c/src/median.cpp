@@ -6,7 +6,7 @@ double calculateMedian(const std::vector<double>& numbers) {
     size_t size = numbers.size();
     if (size % 2 == 0) {
         // Если количество элементов четное
-        return (numbers[size / 2 - 1] + numbers[size / 2]) / 2.0;
+        return computeMedian(numbers[size / 2 - 1], numbers[size / 2]);
     } else {
         // Если количество элементов нечетное
         return numbers[size / 2];
@@ -18,4 +18,9 @@ double findMedian(std::vector<double>& numbers) {
     std::sort(numbers.begin(), numbers.end()); // Сортируем массив
     return calculateMedian(numbers); // Вычисляем медиану
 }
+
+double computeMedian(double a, double b) {
+    return (a + b) / 2.0; // Среднее между a и b
+}
+
 

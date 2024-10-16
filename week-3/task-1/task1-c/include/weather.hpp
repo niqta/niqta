@@ -1,8 +1,8 @@
-#ifndef WEATHER_H
-#define WEATHER_H
+#ifndef WEATHER_HPP
+#define WEATHER_HPP
 
 // Функция для проверки, хотите ли вы играть в бадминтон
-bool wantToPlay(int день, int погодаТемпература, int осадки, int ветер, int влажность);
+bool wantToPlay(int day, int temperature, int precipitation, int wind, int humidity);
 
 #endif
 

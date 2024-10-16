@@ -3,8 +3,7 @@
 #include "median.hpp"
 
 int main() {
-    // Пример ввода
-    std::vector<double> numbers = {3, 1, 4, 2};
+    std::vector<double> numbers = {3.5, 1.2, 4.8, 2.9};
 
     double median = findMedian(numbers);
 
@@ -12,4 +11,5 @@ int main() {
 
     return 0;
 }
+
 

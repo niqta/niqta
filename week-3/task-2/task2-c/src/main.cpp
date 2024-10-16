@@ -6,9 +6,12 @@ int main() {
     std::cout << "Введите верхнюю границу: ";
     std::cin >> n;
 
-    sieveOfEratosthenes(n);
+    if (n > 1) { // Проверка на положительное значение
+        sieveOfEratosthenes(n);
+    } else {
+        std::cout << "Пожалуйста, введите число больше 1." << std::endl;
+    }
+
     return 0;
 }
-
-
 
