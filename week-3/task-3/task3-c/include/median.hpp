@@ -1,11 +1,8 @@
 #ifndef MEDIAN_HPP
 #define MEDIAN_HPP
 
-#include <vector>
-
-double calculateMedian(const std::vector<double>& numbers);
-double findMedian(std::vector<double>& numbers);
-double computeMedian(double a, double b);
+double calculateMedian(double numbers[], int size);
+double findMedian(double numbers[], int size);
 
 #endif
 
