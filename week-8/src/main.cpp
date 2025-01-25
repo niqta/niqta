@@ -1,6 +1,6 @@
 #include <iostream>
 #include <ctime>
-#include "fibonacci.hpp"
+#include "../include/fibonacci.hpp"
 
 using namespace std;
 

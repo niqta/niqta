@@ -1,4 +1,4 @@
-#include "fibonacci.hpp"
+#include "../include/fibonacci.hpp"
 
 // Глобальный кеш для оптимизированной версии
 map<int, long long> cache;
