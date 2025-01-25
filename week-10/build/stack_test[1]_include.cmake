@@ -1,5 +1,0 @@
-if(EXISTS "/home/niqta/Study/week-10/build/stack_test[1]_tests.cmake")
-  include("/home/niqta/Study/week-10/build/stack_test[1]_tests.cmake")
-else()
-  add_test(stack_test_NOT_BUILT stack_test_NOT_BUILT)
-endif()
