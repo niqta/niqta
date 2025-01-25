@@ -1,0 +1,3 @@
+/home/niqta/Study/week12 &&/task2/build/CMakeFiles/PasswordCracker.dir
+/home/niqta/Study/week12 &&/task2/build/CMakeFiles/edit_cache.dir
+/home/niqta/Study/week12 &&/task2/build/CMakeFiles/rebuild_cache.dir
