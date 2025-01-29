@@ -1,2 +1,0 @@
-/usr/bin/ar qc libentropy_calculator.a CMakeFiles/entropy_calculator.dir/src/entropy_calculator.cpp.o
-/usr/bin/ranlib libentropy_calculator.a
