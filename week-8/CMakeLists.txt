@@ -1,16 +1,13 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 2.8)
 
-project(StackExample LANGUAGES CXX)
+project(Fibonacci)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SOURCE_EXE src/main.cpp)
 
-# Устанавливаем путь к заголовочным файлам
-include_directories(include)
+set(SOURCE_LIB src/fibonacci.cpp)
 
-# Сборка библиотеки stack
-add_library(stack STATIC src/fibonacci.cpp)  # Убедитесь, что файл fibonacci.cpp существует
+add_library(fibonacci STATIC ${SOURCE_LIB})
 
-# Сборка основного исполнимого файла
-add_executable(main src/main.cpp)
-target_link_libraries(main stack)  # Связываем с библиотекой stack
+add_executable(main ${SOURCE_EXE})
+
+target_link_libraries(main fibonacci)

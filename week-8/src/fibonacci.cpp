@@ -1,7 +1,7 @@
 #include "../include/fibonacci.hpp"
 
-// Глобальный кеш для оптимизированной версии
-map<int, long long> cache;
+// Определение глобального кеша
+std::map<int, long long> cache;
 
 long long classic(int n) {
     if (n <= 1) return n;
@@ -20,3 +20,4 @@ long long optimized(int n) {
     cache[n] = optimized(n - 1) + optimized(n - 2);
     return cache[n];
 }
+

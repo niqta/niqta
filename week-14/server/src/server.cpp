@@ -1,97 +1,61 @@
-#include "../include/server.hpp"
-#include "../include/function.hpp"
-#include <cstring>
 #include <iostream>
+#include <vector>
 #include <thread>
+#include <mutex>
+#include <stdexcept>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 #include <unistd.h>
+#include "../include/server.hpp"
 
-using namespace std;
+int main() {
+    int server_socket, client_socket;
+    sockaddr_in server_addr, client_addr;
+    socklen_t client_addr_len = sizeof(client_addr);
 
-Server::Server() {
-    opt = 1;
-    addrlen = sizeof(address);
-    
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd < 0) {
-        cerr << "Ошибка при создании сокета" << endl;
-        exit(EXIT_FAILURE);
-    }
+    const int PORT = 8080;
 
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    try {
+        create_socket(server_socket);
 
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(PORT);
+        server_addr.sin_family = AF_INET;
+        server_addr.sin_port = htons(PORT);
+        server_addr.sin_addr.s_addr = INADDR_ANY;
 
-    if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
-        cerr << "Ошибка при привязке сокета" << endl;
-        exit(EXIT_FAILURE);
-    }
+        bind_socket(server_socket, server_addr);
+        listen_socket(server_socket);
 
-    if (listen(server_fd, MAX_CLIENTS) < 0) {
-        cerr << "Ошибка при прослушивании" << endl;
-        exit(EXIT_FAILURE);
-    }
-}
+        std::cout << "Сервер запущен, ожидаем подключений..." << std::endl;
 
-void Server::start() {
-    cout << "Сервер запущен на порту " << PORT << endl;
-    
-    while (true) {
-        int client_socket = accept(server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-        if (client_socket < 0) {
-            cerr << "Ошибка при подключении клиента" << endl;
-            continue;
+        std::vector<int> clients;
+        std::mutex clients_mutex;
+
+        // Главный цикл сервера для принятия подключений от клиентов
+        while (true) {
+            client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_len);
+            if (client_socket == -1) {
+                throw std::runtime_error("Ошибка при принятии подключения!");
+            }
+
+            {
+                std::lock_guard<std::mutex> guard(clients_mutex);
+                clients.push_back(client_socket);
+            }
+
+            // Выводим сообщение о подключении нового клиента
+            std::cout << "Новый пользователь подключен!" << std::endl;
+
+            std::thread(handle_client, client_socket, std::ref(clients), std::ref(clients_mutex)).detach();
         }
 
-        cout << "Новый клиент подключен" << endl;
-
-        std::thread client_thread([this, client_socket]() {
-            handleClient(client_socket);
-        });
-        client_thread.detach(); 
-    }
-}
-
-void Server::addClient(int client_socket) {
-    std::lock_guard<std::mutex> guard(mtx);
-    client_sockets.push_back(client_socket);
-}
-
-void Server::removeClient(int client_socket) {
-    std::lock_guard<std::mutex> guard(mtx);
-    client_sockets.erase(std::remove(client_sockets.begin(), client_sockets.end(), client_socket), client_sockets.end());
-}
-
-void Server::handleClientDisconnection(int client_socket) {
-    removeClient(client_socket);
-    std::cout << "Клиент отключен: " << client_socket << std::endl;
-}
-
-void Server::handleClient(int client_socket) {
-    addClient(client_socket);
-    char buffer[1024] = {0};
-
-    while (true) {
-        int bytes_read = read(client_socket, buffer, sizeof(buffer));
-        if (bytes_read <= 0) {
-            handleClientDisconnection(client_socket);
-            close(client_socket);
-            return;
+        close(server_socket);
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
+        if (server_socket != -1) {
+            close(server_socket);
         }
-
-        std::string message(buffer, bytes_read);
-        broadcastMessage(message);
-        memset(buffer, 0, sizeof(buffer)); 
+        return -1;
     }
+
+    return 0;
 }
-
-void Server::broadcastMessage(const std::string& message) {
-    std::lock_guard<std::mutex> guard(mtx);
-    for (int socket : client_sockets) {
-        send(socket, message.c_str(), message.length(), 0);
-    }
-}
-
-
-

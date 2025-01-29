@@ -1,42 +1,15 @@
-#ifndef SERVER_HPP
-#define SERVER_HPP
-
-#include <iostream>
 #include <vector>
 #include <mutex>
 #include <string>
-#include <sys/socket.h>
-#include <netinet/in.h> 
-#include <unistd.h> 
-#include <algorithm> 
+#include <netinet/in.h>
 
-#define PORT 8080
-#define MAX_CLIENTS 10
+extern std::vector<std::string> message_history;
+extern std::mutex history_mutex;
 
-class Server {
-public:
-    Server();
-    void start();
-
-private:
-    void addClient(int client_socket); 
-    void removeClient(int client_socket);
-    void sendMessageToClient(int client_socket, const std::string& message);
-    void handleClientDisconnection(int client_socket); 
-    void handleClient(int client_socket);
-    void broadcastMessage(const std::string& message); 
-
-    int server_fd;
-    int opt;
-    struct sockaddr_in address;
-    int addrlen;
-    std::vector<int> client_sockets;
-    std::mutex mtx;
-};
-
-#endif 
-
-
-
-
+void create_socket(int& socket_fd);
+void bind_socket(int socket_fd, sockaddr_in& server_addr);
+void listen_socket(int socket_fd);
+void broadcast_message(const std::vector<int>& clients, std::mutex& clients_mutex, const std::string& message, int sender_socket);
+void send_message_history(int client_socket);
+void handle_client(int client_socket, std::vector<int>& clients, std::mutex& clients_mutex);
 

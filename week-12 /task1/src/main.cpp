@@ -1,85 +1,47 @@
-#include "../include/number.hpp"
 #include <iostream>
-#include <vector>
-#include <thread>
+#include <map>
 #include <chrono>
-#include <algorithm>
-#include <random>
-#include <mutex>
-#include <plog/Log.h>
-#include <plog/Appenders/ColorConsoleAppender.h>
-#include <plog/Formatters/TxtFormatter.h>
-#include <plog/Initializers/ConsoleInitializer.h>
+#include "../include/prime_finder.hpp"
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
-using namespace std;
+int main() {
+     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    spdlog::logger logger("my_logger", console_sink);
+    logger.set_level(spdlog::level::debug);
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        cerr << "Usage: " << argv[0] << " <numbers...>" << endl;
+    // Загружаем конфигурацию из файла
+    std::map<std::string, int> config = loadConfig("config.cfg");
+
+    // Проверяем, загружены ли все параметры
+    if (config.empty()) {
+        spdlog::error("Не удалось загрузить конфигурацию или отсутствуют необходимые параметры.");
         return 1;
     }
 
-    vector<int> numbers;
-    for (int i = 1; i < argc; ++i) {
-        numbers.push_back(stoi(argv[i]));
-    }
+    int start = config["start"];
+    int end = config["end"];
+    int numThreads = config["numThreads"];
 
-    plog::init(plog::debug, new plog::ColorConsoleAppender<plog::TxtFormatter>());
+     if (start >= end) {
+         spdlog::error("Начальное значение должно быть меньше конечного.");
+        return 1;
+    }
+     if (numThreads <= 0) {
+         spdlog::error("Количество потоков должно быть больше 0.");
+        return 1;
+    }
     
-    vector<int> primesWS;  
-    vector<int> primesED;  
-    mutex mtx;
-    int numThreads = thread::hardware_concurrency();
-    vector<thread> threads;
+    // Логируем параметры начала вычислений
+    spdlog::info("Запуск вычислений простых чисел...");
+    spdlog::info("Начало: {}, Конец: {}, Количество потоков: {}", start, end, numThreads);
 
-   
-    auto startTimeWS = chrono::high_resolution_clock::now();
+    // Вычисления методом Work Stealing
+    spdlog::info("Запуск метода Work Stealing...");
+    runWorkStealing(start, end, numThreads);
 
-    int range = numbers.size() / numThreads;
-    for (int i = 0; i < numThreads; ++i) {
-        int threadStart = i * range;
-        int threadEnd = (i == numThreads - 1) ? numbers.size() : threadStart + range;
-        threads.emplace_back(findPrimesWorkStealing, threadStart, threadEnd, ref(numbers), ref(primesWS), ref(mtx));
-    }
-
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    auto endTimeWS = chrono::high_resolution_clock::now();
-    chrono::duration<double> durationWS = endTimeWS - startTimeWS;
-    PLOGD << "Work Stealing duration: " << durationWS.count() << " seconds";
-
-    
-    cout << "Простые числа (Work Stealing): ";
-    for (int prime : primesWS) {
-        cout << prime << " ";
-    }
-    cout << endl;
-
-    
-    vector<int> shuffledNumbers = numbers;
-    shuffle(shuffledNumbers.begin(), shuffledNumbers.end(), default_random_engine());
-
-    auto startTimeED = chrono::high_resolution_clock::now();
-    findPrimesEvenDistribution(0, shuffledNumbers.size(), shuffledNumbers, primesED);
-    auto endTimeED = chrono::high_resolution_clock::now();
-    chrono::duration<double> durationED = endTimeED - startTimeED;
-    PLOGD << "Shuffle: " << durationED.count() << " seconds";
-
-   
-    sort(primesED.begin(), primesED.end());
-
-    
-    cout << "Простые числа (Shuffle): ";
-    for (int prime : primesED) {
-        cout << prime << " ";
-    }
-    cout << endl;
-
+    // Вычисления методом Shuffle
+    spdlog::info("Запуск метода Shuffle...");
+    runShuffle(start, end, numThreads);
     return 0;
 }
-
-
-
-

@@ -1,0 +1,4 @@
+/home/niqta/Study/week-11/task2/build/CMakeFiles/entropy_calculator.dir
+/home/niqta/Study/week-11/task2/build/CMakeFiles/main.dir
+/home/niqta/Study/week-11/task2/build/CMakeFiles/edit_cache.dir
+/home/niqta/Study/week-11/task2/build/CMakeFiles/rebuild_cache.dir
