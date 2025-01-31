@@ -2,7 +2,7 @@
 BUILD_DIR := build
 
 # Исполнимые файлы
-MAIN_EXEC := main
+MAIN_EXEC := FibonacciLogger
 
 # Путь к CMake
 CMAKE := cmake

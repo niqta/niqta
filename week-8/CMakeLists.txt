@@ -1,13 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.14)
+project(FibonacciLogger)
 
-project(Fibonacci)
+# Настройка spdlog
+find_package(spdlog REQUIRED)
 
-set(SOURCE_EXE src/main.cpp)
+# Включаем заголовочные файлы
+include_directories(include)
 
-set(SOURCE_LIB src/fibonacci.cpp)
+# Добавляем исполняемый файл
+add_executable(FibonacciLogger
+    src/main.cpp
+    src/fibonacci.cpp
+    src/logger.cpp
+)
 
-add_library(fibonacci STATIC ${SOURCE_LIB})
-
-add_executable(main ${SOURCE_EXE})
-
-target_link_libraries(main fibonacci)
+# Подключаем spdlog
+target_link_libraries(FibonacciLogger PRIVATE spdlog::spdlog)

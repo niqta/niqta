@@ -2,13 +2,10 @@
 #define FIBONACCI_HPP
 
 #include <map>
+#include <string>
 
-// Объявления функций
 long long classic(int n);
 long long optimized(int n);
-
-// Глобальный кеш для оптимизированной версии
-extern std::map<int, long long> cache;
+void measureTime(int n);
 
 #endif // FIBONACCI_HPP
-
